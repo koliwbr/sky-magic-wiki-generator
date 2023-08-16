@@ -1,0 +1,35 @@
+{
+	"skymagic:magicdust":{
+		"ingridiens":[
+			"minecraft:gold_nuget",
+			"minecraft:air",
+			"minecraft:gold_nuget",
+			"skymagic:redstone",
+			"minecraft:lapis_lazuzli",
+			"minecraft:lapis_lazuzli",
+			"minecraft:gold_nuget",
+			"minecraft:air",
+			"minecraft:gold_nuget"
+		],
+		"type":"magictable",
+		"count":1
+
+	},
+	"skymagic:magicsteel":{
+		"ingridiens":[
+			"minecraft:air",
+			"skymagic:magicdust",
+			"minecraft:air",
+			"minecraft:air",
+			"skymagic:magicdust",
+			"minecraft:iron",
+			"skymagic:magicdust",
+			"minecraft:air",
+			"skymagic:magicdust",
+			"minecraft:air"
+
+		],
+		"type":"magictable",
+		"count":1
+	}
+}
