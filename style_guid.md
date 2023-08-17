@@ -1,5 +1,7 @@
 # Style Guid for writing custom items
 
+WARN: this is for old code!
+
 _EN: Mayby i translate it later... Try Google translate or somthing similar_
 
 Nazwy przedmiotów dla ścisłości z Vanillą piszemy `sneak_case` czyli każde słowo oddzielone podkreślnikiem

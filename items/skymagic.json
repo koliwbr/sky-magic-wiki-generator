@@ -1,25 +1,10 @@
 {
 	"magic_dust": {
-		"nbt": {
-			"Enchantments": [],
-			"display": {
-				"Lore": [],
-				"Name": "{\"text\":\"Magic Dust\"}"
-			}
-		},
-		"id": "minecraft:blue_dye"
+		"id": "clock",
+		"CustomModelData" : 2
 	},
 	"magic_steel": {
-		"nbt": {
-			"CustomModelData": 6,
-			"Enchantments": [],
-			"Tags": [
-				"Magic Steel"
-			],
-			"display": {
-				"Name": "{\"text\":\"Magic Steel\"}"
-			}
-		},
-		"id": "minecraft:clock"
+		"CustomModelData": 6,
+		"id": "clock"
 	}
 }

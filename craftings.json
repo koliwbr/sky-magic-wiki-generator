@@ -1,35 +1,28 @@
 {
-	"skymagic:magicdust":{
-		"ingridiens":[
-			"minecraft:gold_nuget",
-			"minecraft:air",
-			"minecraft:gold_nuget",
-			"skymagic:redstone",
-			"minecraft:lapis_lazuzli",
-			"minecraft:lapis_lazuzli",
-			"minecraft:gold_nuget",
-			"minecraft:air",
-			"minecraft:gold_nuget"
-		],
-		"type":"magictable",
-		"count":1
-
+	"minecraft:bamboo": {
+		"type": "magic_table",
+		"ingredients": [
+			"minecraft:stick", "minecraft:stick", "minecraft:stick",
+			"minecraft:stick", "minecraft:sugar_cane", "minecraft:stick",
+			"minecraft:stick", "skymagic:magic_dust", "minecraft:stick"
+		]
 	},
-	"skymagic:magicsteel":{
-		"ingridiens":[
-			"minecraft:air",
-			"skymagic:magicdust",
-			"minecraft:air",
-			"minecraft:air",
-			"skymagic:magicdust",
-			"minecraft:iron",
-			"skymagic:magicdust",
-			"minecraft:air",
-			"skymagic:magicdust",
-			"minecraft:air"
-
+	"minecraft:experience_bottle":{
+		"type" : "magic_table",
+		"ingredients":[
+			"skymagic:magic_dust",{"id":"minecraft:lapis_lazuli","count":2},"skymagic:magic_dust",
+			"minecraft:lapis_lazuli",{"id":"minecraft:lapis_lazuli","count":2},"minecraft:lapis_lazuli",
+			"minecraft:lapis_lazuli",{"id":"minecraft:glass_bottle","count":8},"minecraft:lapis_lazuli"
 		],
-		"type":"magictable",
-		"count":1
+		"count":8
+	},
+	"minecraft:enchanted_book":{
+		"type":"magic_table",
+		"ingredients":[
+			"","minecraft:shield","",
+			"minecraft:tnt","minecraft:book","minecraft:tnt",
+			{"id":"skymagic:magic_dust","count":2},{"id":"minecraft:experience_bottle","count":4},{"id":"skymagic:magic_dust","count":2}
+		],
+		"nbt":"StoredEnchantments:[{id:\"minecraft:blast_protection\",lvl:1s}]"
 	}
 }
