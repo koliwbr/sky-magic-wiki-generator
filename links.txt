@@ -1,2 +1,7 @@
 https://raw.githubusercontent.com/PrismarineJS/minecraft-data/master/data/pc/1.20/items.json
 https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.19.1/items/stick.png
+
+
+https://minecraft.fandom.com/wiki/Module:InvSprite?action=raw
+https://stackoverflow.com/a/72141169/15192209
+https://minecraft.fandom.com/wiki/File:InvSprite.png
