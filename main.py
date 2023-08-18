@@ -1,92 +1,20 @@
 #!/bin/env python3
+import json
 
 namespace = 'skymagic'
 
-import json
-
-display_names = {}
-
-for item in json.load(open('vanila_items.json')):
-	display_names["minecraft:"+item['name']] = item['displayName']
-
-crafting_items = {}
-for item in display_names.keys():
-	crafting_items[f'minecraft:{item.removeprefix("minecraft:")}'] = f'id: "minecraft:{item}"'
-
-warnings = []
-
-def check(item, data):
-	assert type(data.get('id')) == str # check if ID exist, is string exist and is not empty
-	item_id = data['id'].removeprefix('minecraft:')
-	assert display_names.get("minecraft:"+item_id) # check if base item exist in minecraft
-
-	if not data.get('CustomModelData'):
-		try:
-			warnings.append(f"{namespace}:{item} => No CustomModelData!")
-		except NameError:
-			pass
-
-def gen_give_command(item,nbt):
-	return f'give @s {item}{{{nbt}}}'
-
-def get_display_name(item_name):
-	return ' '.join([word[0].upper()+word[1::] for word in item_name.split('_')])
-
-def gen_nbt(item,data):
-	nbt = []
-	nbt.append('display:{"Name":"{\\"text\\":\\"'+get_display_name(item)+'\\",\\"italic\\":false}"}')
-	nbt.append(f'Tags:["{get_display_name(item)}"]')
-	if data.get('CustomModelData'):
-		nbt.append(f'CustomModelData:{data.get("CustomModelData")}')
-	# nbt.append("Enchantments:[]")
-	return ','.join(nbt)
-
-def html_item_icon(id,count=1):
-	namespaces = {
-		"minecraft" : ["mcitem",json.load(open('atlas-mapping-vanilla.json'))],
-		"skymagic" :  ["smitem",json.load(open('atlas-mapping-skymagic.json'))]
-	}
-
-	if type(id) == dict:
-		count = id.get('count',1)
-		id = id.get('id',"minecraft:null")
-
-	if count == 1:
-		count = "&nbsp"
-	if id == "":
-		id = "minecraft:air"
-
-	assert type(id) == str
-
-	item_namespace, id = id.split(":",1)
-	fandom_minecraft_wiki_link = "https://minecraft.fandom.com/wiki/"
-	base_html = f'<span id="item" class="item {namespaces[item_namespace][0]}" style="background-position: -%spx -%spx;" >{count}</span>'
-
-	if item_namespace == "minecraft":
-		base_html = f'<a target="_blank" href="{fandom_minecraft_wiki_link}{id}">{base_html}</a>'
-	index = namespaces[item_namespace][1].get(id,1) - 1
-	return base_html % ( (index%32)*32, int(index/32)*32 )
-	
-
-def load_items():
-	for item, data in json.load(open(f'items/skymagic.json')).items():
-		check(item, data)
-		display_name = get_display_name(item)
-		crafting_items[f"{namespace}:{item}"] = f'id:"minecraft:{data["id"]}",tag:{{Tags:["{display_name}"]}}'
-		display_names[f"{namespace}:{item}"] = display_name
-
-		# print(gen_give_command(data['id'],gen_nbt(item,data)))
-		# print(f"{namespace}:{item}{{{gen_nbt(item,data)}}}")
-
-	for warn in warnings:
-		print(f"\033[31mWARN: {warn}\033[39m")
-
-# if warnings:
-# 	exit(2)
+atlas_namespaces = {
+	"minecraft" : ["mcitem",json.load(open('atlas-mapping-vanilla.json'))],
+	"skymagic" :  ["smitem",json.load(open('atlas-mapping-skymagic.json'))]
+}
 
 workstations = [
 	('magic_table',9)
 ]
+
+display_names = {}
+crafting_items = {}
+warnings = []
 
 wiki_html = '''
 <style type="text/css">
@@ -106,6 +34,81 @@ wiki_html = '''
 </style>
 <script type="text/javascript" src="https://livejs.com/live.js"></script>
 '''
+
+
+for item in json.load(open('vanila_items.json')):
+	display_names["minecraft:"+item['name']] = item['displayName']
+
+for item in display_names.keys():
+	crafting_items[f'minecraft:{item.removeprefix("minecraft:")}'] = f'id: "minecraft:{item}"'
+
+
+def check(item, data):
+	assert type(data.get('id')) == str # check if ID exist, is string exist and is not empty
+	item_id = data['id'].removeprefix('minecraft:')
+	assert display_names.get("minecraft:"+item_id) # check if base item exist in minecraft
+
+	if not data.get('CustomModelData'):
+		try:
+			warnings.append(f"{namespace}:{item} => No CustomModelData!")
+		except NameError:
+			pass
+
+def gen_give_command(item,nbt):
+	return f'give @s {item}{{{nbt}}}'
+
+def gen_display_name(item_name):
+	return ' '.join([word[0].upper()+word[1::] for word in item_name.split('_')])
+
+def gen_nbt(item,data):
+	nbt = []
+	nbt.append('display:{"Name":"{\\"text\\":\\"'+gen_display_name(item)+'\\",\\"italic\\":false}"}')
+	nbt.append(f'Tags:["{gen_display_name(item)}"]')
+	if data.get('CustomModelData'):
+		nbt.append(f'CustomModelData:{data.get("CustomModelData")}')
+	# nbt.append("Enchantments:[]")
+	return ','.join(nbt)
+
+def html_item_icon(id,count=1):
+
+	if type(id) == dict:
+		count = id.get('count',1)
+		id = id.get('id',"minecraft:null")
+	assert type(id) == str
+
+	if count == 1:
+		count = "&nbsp"
+	if id == "":
+		id = "minecraft:air"
+
+
+	item_namespace, id = id.split(":",1)
+	fandom_minecraft_wiki_link = "https://minecraft.fandom.com/wiki/"
+	base_html = f'<span id="item" title="{display_names.get(item_namespace+":"+id)}" class="item {atlas_namespaces[item_namespace][0]}" style="background-position: -%spx -%spx;" >{count}</span>'
+
+	if item_namespace == "minecraft":
+		base_html = f'<a target="_blank" href="{fandom_minecraft_wiki_link}{id}">{base_html}</a>'
+	index = atlas_namespaces[item_namespace][1].get(id,1) - 1
+	return base_html % ( (index%32)*32, int(index/32)*32 )
+	
+
+def load_items():
+	for item, data in json.load(open(f'items/skymagic.json')).items():
+		check(item, data)
+		display_name = gen_display_name(item)
+		crafting_items[f"{namespace}:{item}"] = f'id:"minecraft:{data["id"]}",tag:{{Tags:["{display_name}"]}}'
+		display_names[f"{namespace}:{item}"] = display_name
+
+		# print(gen_give_command(data['id'],gen_nbt(item,data)))
+		# print(f"{namespace}:{item}{{{gen_nbt(item,data)}}}")
+
+	for warn in warnings:
+		print(f"\033[31mWARN: {warn}\033[39m")
+
+# if warnings:
+# 	exit(2)
+
+
 
 def load_craftings():
 
