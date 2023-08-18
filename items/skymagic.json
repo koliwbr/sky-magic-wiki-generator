@@ -6,5 +6,13 @@
 	"magic_steel": {
 		"CustomModelData": 6,
 		"id": "clock"
+	},
+	"heavy_steel_crossbow":
+	{
+		"id":"crossbow",
+		"CustomModelData":4,
+		"nbt":"AttributeModifiers:[{Amount:-0.8d,AttributeName:\"minecraft:generic.movement_speed\",Name:\"\",Operation:1,Slot:\"mainhand\",UUID:[I;1700689185,2026193433,1655917489,126669536]}],Tags:[\"MagicV2Item\",\"Sniper Crossbow\"]"
 	}
 }
+
+
