@@ -73,7 +73,7 @@
         ]
     },
     "minecraft:slime_ball":{
-        "type":"crafting",
+        "type":"magic_table",
         "ingredients":[
             [
                 "","","",
@@ -140,14 +140,76 @@
             "","skymagic:magic_dust",""
         ]
     },
-    "minecraft:enchanted_book":{
-        "type":"magic_table",
-        "ingredients":[
-            "","minecraft:shield","",
-            "minecraft:tnt","minecraft:book","minecraft:tnt",
-            {"id":"skymagic:magic_dust","count":2},{"id":"minecraft:experience_bottle","count":4},{"id":"skymagic:magic_dust","count":2}
-        ],
-        "nbt":"StoredEnchantments:[{id:\"minecraft:blast_protection\",lvl:1s}]",
-        "wiki_name":"Blast Protection"
-    }
+    "minecraft:enchanted_book":[
+        {
+            "type":"magic_table",
+            "ingredients":[
+                "","minecraft:shield","",
+                "minecraft:tnt","minecraft:book","minecraft:tnt",
+                {"id":"skymagic:magic_dust","count":2},{"id":"minecraft:experience_bottle","count":4},{"id":"skymagic:magic_dust","count":2}
+            ],
+            "nbt":"StoredEnchantments:[{id:\"minecraft:blast_protection\",lvl:1s}]",
+            "wiki_name":"Blast Protection"
+        },
+        {
+            "type":"magic_table",
+            "ingredients":[
+                "","minecraft:sugar","",
+                "minecraft:iron_pickaxe","minecraft:book","minecraft:iron_pickaxe",
+                {"id":"skymagic:magic_dust","count":2},"minecraft:experience_bottle",{"id":"skymagic:magic_dust","count":2}
+            ],
+            "nbt":"StoredEnchantments:[{id:\"minecraft:efficiency\",lvl:1s}]",
+            "wiki_name":"Efficiency"
+        },
+        {
+            "type":"magic_table",
+            "ingredients":[
+                "",{"id":"minecraft:paper","count":3},"",
+                "skymagic:magic_feather","minecraft:book","skymagic:magic_feather",
+                {"id":"skymagic:magic_dust","count":2},{"id":"minecraft:experience_bottle","count":4},{"id":"skymagic:magic_dust","count":2}
+            ],
+            "nbt":"StoredEnchantments:[{id:\"minecraft:feather_falling\",lvl:1s}]",
+            "wiki_name":"Feather Falling"
+        },
+        {
+            "type":"magic_table",
+            "ingredients":[
+                "minecraft:blaze_powder","minecraft:golden_sword","minecraft:blaze_powder",
+                "skymagic:hell_iron","minecraft:book","skymagic:hell_iron",
+                {"id":"skymagic:magic_dust","count":2},{"id":"minecraft:experience_bottle","count":8},{"id":"skymagic:magic_dust","count":2}
+            ],
+            "nbt":"StoredEnchantments:[{id:\"minecraft:fire_aspect\",lvl:1s}]",
+            "wiki_name":"Fire Aspect"
+        },
+        {
+            "type":"magic_table",
+            "ingredients":[
+                "","minecraft:bow","",
+                "skymagic:hell_and_steel","minecraft:book","skymagic:hell_and_steel",
+                {"id":"skymagic:magic_dust","count":8},{"id":"minecraft:experience_bottle","count":16},{"id":"skymagic:magic_dust","count":8}
+            ],
+            "nbt":"StoredEnchantments:[{id:\"minecraft:flame\",lvl:1s}]",
+            "wiki_name":"Flame"
+        },
+        {
+            "type":"magic_table",
+            "ingredients":[
+                "minecraft:gold_ingot","minecraft:diamond","minecraft:gold_ingot",
+                "minecraft:emerald","minecraft:book","minecraft:emerald",
+                {"id":"skymagic:magic_dust","count":2},{"id":"minecraft:experience_bottle","count":4},{"id":"skymagic:magic_dust","count":2}
+            ],
+            "nbt":"StoredEnchantments:[{id:\"minecraft:fortune\",lvl:1s}]",
+            "wiki_name":"Fortune"
+        },
+        {
+            "type":"magic_table",
+            "ingredients":[
+                "minecraft:ghast_tear",{"id":"minecraft:arrow","count":16},"minecraft:ghast_tear",
+                "minecraft:bow","minecraft:book","minecraft:bow",
+                {"id":"skymagic:magic_dust","count":8},{"id":"minecraft:experience_bottle","count":16},{"id":"skymagic:magic_dust","count":8}
+            ],
+            "nbt":"StoredEnchantments:[{id:\"minecraft:infinity\",lvl:1s}]",
+            "wiki_name":"Infinity"
+        }
+    ]
 }

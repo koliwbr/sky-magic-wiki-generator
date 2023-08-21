@@ -9,6 +9,10 @@
 		"CustomModelData": 6,
 		"id": "clock"
 	},
+	"magic_feather":{
+		"id" : "feather",
+		"CustomModelData":1
+	},
 	"heavy_steel_crossbow":
 	{
 		"id":"crossbow",
@@ -45,6 +49,15 @@
 		"id":"squid_spawn_egg",
 		"CustomModelData":3,
 		"nbt":"EntityTag:{NoGravity:1b,Silent:1b,Tags:[\"FlyingCarpet_big_spawn\"],id:\"bat\"}"
+	},
+	"hell_iron":{
+		"id":"clock",
+		"CustomModelData":4
+	},
+	"hell_and_steel":{
+		"CustomModelData":1,
+		"id":"flint_and_steel",
+		"nbt":"Damage:0,Enchantments:[{id:\"minecraft:fire_aspect\",lvl:1s},{id:\"minecraft:unbreaking\",lvl:2s}],RepairCost:1"
 	}
 }
 
