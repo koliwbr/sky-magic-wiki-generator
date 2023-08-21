@@ -1,0 +1,34 @@
+{
+	"skymagic:gear":{
+		"type":"magic_table",
+		"ingredients":[
+			"minecraft:redstone","minecraft:copper_ingot","minecraft:redstone",
+			"minecraft:copper_ingot",{"id":"skymagic:magic_dust","count":3},"minecraft:copper_ingot",
+			"minecraft:redstone","minecraft:copper_ingot","minecraft:redstone"
+		]
+	},
+	"skymagic:small_bamboo_carpet":{
+		"type":"magic_table",
+		"ingredients":[
+			{"id":"minecraft:bamboo", "count":8},{"id":"minecraft:ender_pearl", "count":2},{"id":"minecraft:bamboo", "count":8},
+			{"id":"minecraft:bamboo", "count":4},{"id":"minecraft:redstone", "count":3},{"id":"minecraft:bamboo", "count":4},
+			{"id":"skymagic:magic_dust", "count":4},"skymagic:gear",{"id":"skymagic:magic_dust", "count":4}
+		]	
+	},
+	"skymagic:medium_bamboo_carpet":{
+		"type":"magic_table",
+		"ingredients":[
+			{"id":"minecraft:bamboo", "count":24},{"id":"minecraft:ender_pearl", "count":2},{"id":"minecraft:bamboo", "count":24},
+			{"id":"minecraft:bamboo", "count":8},{"id":"minecraft:redstone", "count":6},{"id":"minecraft:bamboo", "count":8},
+			{"id":"skymagic:gear", "count":3},{"id":"skymagic:magic_dust", "count":6},{"id":"skymagic:gear", "count":3}
+		]	
+	},
+	"skymagic:big_bamboo_carpet":{
+		"type":"magic_table",
+		"ingredients":[
+			{"id":"minecraft:bamboo", "count":48},{"id":"minecraft:ender_pearl", "count":2},{"id":"minecraft:bamboo", "count":48},
+			{"id":"minecraft:bamboo", "count":16},{"id":"minecraft:redstone", "count":9},{"id":"minecraft:bamboo", "count":16},
+			{"id":"skymagic:magic_dust", "count":15},{"id":"minecraft:chest", "count":2},{"id":"skymagic:gear", "count":15}
+		]	
+	}
+}
