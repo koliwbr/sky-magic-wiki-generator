@@ -1,4 +1,6 @@
-from main import check
+
+#!/bin/python3
+from newmain import check
 from PIL import Image
 from math import ceil
 import json
@@ -20,8 +22,6 @@ for item, data in json.load(open(f'items/skymagic.json')).items():
 		textures_json[data["id"]] = {}
 	textures_json[data["id"]][data['CustomModelData']] = item
 
-print(textures_json)
-
 txt_item_path = {}
 
 for item_id, txts in textures_json.items():
@@ -34,7 +34,6 @@ for item_id, txts in textures_json.items():
 		for t in txts.values():
 			txt_item_path[t] = f"minecraft:item/{item_id}"
 
-print(txt_item_path)
 
 icons = []
 

@@ -23,6 +23,10 @@
 		"nbt":"Tags:[\"PortableNetherPortal\"]"
 
 	},
+	"frost_gel":{
+		"id":"clock",
+		"CustomModelData":29
+	},
 	"gear":{
 		"id":"clock",
 		"CustomModelData":33 

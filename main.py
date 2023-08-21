@@ -1,6 +1,6 @@
 #!/bin/env python3
 import json
-from pprint import pprint
+import os
 
 namespace = 'skymagic'
 
@@ -10,7 +10,8 @@ atlas_namespaces = {
 }
 
 workstations = [
-	('magic_table',9)
+	('magic_table',9),
+	('crafting',9)
 ]
 
 display_names = {}
@@ -31,8 +32,8 @@ wiki_html = '''
 		width: 32px;
 		height: 32px;
 		display: inline-flex;
-	    background-color: lightgray;
-	    margin: 2px;
+		background-color: lightgray;
+		margin: 2px;
 	}
 </style>
 <script type="text/javascript" src="https://livejs.com/live.js"></script>
@@ -98,15 +99,20 @@ def html_item_icon(id,count=1,name=None):
 	
 
 def load_items():
-	for item, data in json.load(open(f'items/skymagic.json')).items():
-		check(item, data)
-		display_name = gen_display_name(item)
-		crafting_items[f"{namespace}:{item}"] = f'id:"minecraft:{data["id"]}",tag:{{Tags:["{display_name}"]}}'
-		final_items[f"{namespace}:{item}"] = f'id:"minecraft:{data["id"]}",tag:{{Tags:["{display_name}"],{gen_nbt(item,data)},%s }}'
-		display_names[f"{namespace}:{item}"] = display_name
+	for item_fname in os.listdir('items'):
+			if not item_fname.endswith('.json'): continue
+			for item, data in json.load(open(f'items/{item_fname}')).items():
+				check(item, data)
+				display_name = gen_display_name(item)
+				crafting_items[f"{namespace}:{item}"] = f'id:"minecraft:{data["id"]}",tag:{{Tags:["{display_name}"]}}'
+				final_items[f"{namespace}:{item}"] = f'id:"minecraft:{data["id"]}",tag:{{Tags:["{display_name}"],{gen_nbt(item,data)},%s }}'
+				display_names[f"{namespace}:{item}"] = display_name
 
-		print(gen_give_command(data['id'],gen_nbt(item,data)))
-		# print(f"{namespace}:{item}{{{gen_nbt(item,data)}}}")
+
+				display_names[f"{namespace}:{item}"] = display_name
+
+				# print(gen_give_command(data['id'],gen_nbt(item,data)))
+				# print(f"{namespace}:{item}{{{gen_nbt(item,data)}}}")
 
 	for warn in warnings:
 		print(f"\033[31mWARN: {warn}\033[39m")
@@ -116,57 +122,73 @@ def load_items():
 
 
 
-def load_craftings():
+def load_craftings(wiki):
 	print()
-	with open('wiki.html','w') as wiki:
-		wiki.write(wiki_html)
-		for output, data in json.load(open(f'craftings/skymagic.json')).items():
-			if output.startswith("_"):
-				continue
-			if data.get('count') is None:
-				data['count'] = 1
-			assert type(data.get('count')) == int and data['count'] > 0
-			assert data.get('ingredients')
-			assert (data.get('type'),len(data['ingredients'])) in workstations
-
-			ingredients = []
-
-			wiki.write(data.get("wiki_name",display_names[output])+"<br>")
-
-			for item,i in zip(data['ingredients'],range(999)):
-				wiki.write(html_item_icon(item))
-				if i == 5:
-					wiki.write(" => "+html_item_icon(output))
-				if (i+1)%3 == 0:
-					wiki.write("<br>\n")
-				if i == 8:
-					wiki.write("<br><br><br>\n")
-
-				if type(item) == str:
-					if item == "":
+	wiki.write(wiki_html)
+	for crafting_fname in os.listdir('craftings'):
+			if not crafting_fname.endswith('.json'): continue
+			for output, data in json.load(open(f'craftings/{crafting_fname}')).items():
+					if output.startswith("_"):
 						continue
-					ingredients.append(f"{{Slot:{i}b,Count:1b,{crafting_items[item]}}}")
-					continue
-				assert type(item) == dict # ingredient must be a type of STRING or {"id":STRING,"count":INT}
-				if item.get('count') is None:
-					item['count'] = 1
-				assert type(item.get('id')) == str and type(item.get('count')) == int
-				ingredients.append(f"{{Slot:{i}b,Count:{item['count']}b,{crafting_items[item['id']]}}}")
+					assert type(data.get('ingredients')) == list
+					if any([type(x) == list for x in data['ingredients']]):
+							assert all([type(x) == list for x in data['ingredients']])
+							craftings = data['ingredients']
+ 
+					else:
+							craftings = [data['ingredients']]
+ 
+					# wiki.write(f'<span id="item-{output}">{display_names[output]}</span><br>')
+					for crafting,is_last_crafting in zip(craftings,([False]*(len(craftings)-1))+[True]):
+						data['ingredients'] = crafting
 
 
-			if data.get('nbt') and data['nbt'][0] == '{' and data['nbt'][-1] == '}':
-				data['nbt'] = data['nbt'][1:-1]
+						if data.get('count') is None:
+							data['count'] = 1
+						assert type(data.get('count')) == int and data['count'] > 0
+						assert data.get('ingredients')
+						assert (data.get('type'),len(data['ingredients'])) in workstations
 
-			ingredients = ','.join(ingredients)
+						ingredients = []
 
-			item_nbt = final_items.get(output,f'id:"{output}",%s') % data.get('nbt','')
+						wiki.write(data.get("wiki_name",display_names[output])+"<br>")
 
-			print(f"execute if block ~ ~ ~ minecraft:dropper{{Items:[{ingredients}]}} "
-				f"run data merge block ~ ~ ~ {{Items:[{{Slot:4b,Count:{data['count']}b,{item_nbt}}}]}}")
+						for item,i in zip(data['ingredients'],range(999)):
+							wiki.write(html_item_icon(item))
+							if i == 5:
+								wiki.write(" => "+html_item_icon(output,count=data.get('count',1)))
+							if (i+1)%3 == 0:
+								wiki.write("<br>\n")
+							if i == 8:
+								wiki.write("<br><br><br>\n")
 
+							if type(item) == str:
+								if item == "":
+									continue
+								ingredients.append(f"{{Slot:{i}b,Count:1b,{crafting_items[item]}}}")
+								continue
+							assert type(item) == dict # ingredient must be a type of STRING or {"id":STRING,"count":INT}
+							if item.get('count') is None:
+								item['count'] = 1
+							assert type(item.get('id')) == str and type(item.get('count')) == int
+							ingredients.append(f"{{Slot:{i}b,Count:{item['count']}b,{crafting_items[item['id']]}}}")
+
+
+						if data.get('nbt') and data['nbt'][0] == '{' and data['nbt'][-1] == '}':
+							data['nbt'] = data['nbt'][1:-1]
+
+						ingredients = ','.join(ingredients)
+
+						item_nbt = final_items.get(output,f'id:"{output}",%s') % data.get('nbt','')
+
+						print(f"execute if block ~ ~ ~ minecraft:dropper{{Items:[{ingredients}]}} "
+							f"run data merge block ~ ~ ~ {{Items:[{{Slot:4b,Count:{data['count']}b,{item_nbt}}}]}}")
+
+def gen_wiki():
+	with open('wiki.html','w') as wiki:
+		load_craftings(wiki)
 
 if __name__ == "__main__":
 	load_items()
-	load_craftings()
-	print()
-	print(final_items['skymagic:gear'])
+	# load_craftings()
+	gen_wiki()
