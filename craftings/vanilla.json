@@ -147,6 +147,7 @@
             "minecraft:tnt","minecraft:book","minecraft:tnt",
             {"id":"skymagic:magic_dust","count":2},{"id":"minecraft:experience_bottle","count":4},{"id":"skymagic:magic_dust","count":2}
         ],
-        "nbt":"StoredEnchantments:[{id:\"minecraft:blast_protection\",lvl:1s}]"
+        "nbt":"StoredEnchantments:[{id:\"minecraft:blast_protection\",lvl:1s}]",
+        "wiki_name":"Blast Protection"
     }
 }

@@ -33,10 +33,25 @@ wiki_html = '''
 		height: 32px;
 		display: inline-flex;
 		background-color: lightgray;
-		margin: 2px;
+		border-style: solid;
+		border-width: 1.5px;
+		border-color: gray;
+	}
+	.crafting {
+		margin: 5px;
+		background-color: darkgray;
+		border-style: solid;
+		border-width: 2px;
+		border-color: gray;
+		display:inline-block;
+		padding: 5px;
+	}
+	body {
+		background-color: #444;
 	}
 </style>
 <script type="text/javascript" src="https://livejs.com/live.js"></script>
+<b>Sky Magic</b>
 '''
 
 
@@ -87,13 +102,15 @@ def html_item_icon(id,count=1,name=None):
 	if id == "":
 		id = "minecraft:air"
 
-
 	item_namespace, id = id.split(":",1)
-	fandom_minecraft_wiki_link = "https://minecraft.fandom.com/wiki/"
-	base_html = f'<span id="item" title="{display_names.get(item_namespace+":"+id)}" class="item {atlas_namespaces[item_namespace][0]}" style="background-position: -%spx -%spx;" >{count}</span>'
+
+	fandom_minecraft_wiki_link = "https://minecraft.fandom.com/wiki/" + (name.replace(" ","_") if name else id)
+	if not name:
+		name = display_names.get(item_namespace+":"+id)
+	base_html = f'<span id="item" title="{name}" class="item {atlas_namespaces[item_namespace][0]}" style="background-position: -%spx -%spx;" >{count}</span>'
 
 	if item_namespace == "minecraft":
-		base_html = f'<a target="_blank" href="{fandom_minecraft_wiki_link}{id}">{base_html}</a>'
+		base_html = f'<a target="_blank" href="{fandom_minecraft_wiki_link}">{base_html}</a>'
 	index = atlas_namespaces[item_namespace][1].get(id,1) - 1
 	return base_html % ( (index%32)*32, int(index/32)*32 )
 	
@@ -122,71 +139,69 @@ def load_items():
 
 
 
-def load_craftings(wiki):
+def load_craftings(wiki,crafting_fname):
 	print()
 	wiki.write(wiki_html)
-	for crafting_fname in os.listdir('craftings'):
-			if not crafting_fname.endswith('.json'): continue
-			for output, data in json.load(open(f'craftings/{crafting_fname}')).items():
-					if output.startswith("_"):
+	for output, data in json.load(open(f'craftings/{crafting_fname}')).items():
+			if output.startswith("_"):
+				continue
+			assert type(data.get('ingredients')) == list
+			if any([type(x) == list for x in data['ingredients']]):
+					assert all([type(x) == list for x in data['ingredients']])
+					craftings = data['ingredients']
+
+			else:
+					craftings = [data['ingredients']]
+
+			wiki.write("<br>"+data.get("wiki_name",display_names[output])+"<br>")
+			for crafting,is_last_crafting in zip(craftings,([False]*(len(craftings)-1))+[True]):
+				wiki.write('<div class="crafting" >')
+				data['ingredients'] = crafting
+
+				if data.get('count') is None:
+					data['count'] = 1
+				assert type(data.get('count')) == int and data['count'] > 0
+				assert data.get('ingredients')
+				assert (data.get('type'),len(data['ingredients'])) in workstations
+
+				ingredients = []
+
+
+				for item,i in zip(data['ingredients'],range(999)):
+					wiki.write(html_item_icon(item))
+					if i == 5:
+						wiki.write(" => "+html_item_icon(output,count=data['count'],name=data.get('wiki_name')))
+					if (i+1)%3 == 0:
+						wiki.write("<br>\n")
+					# if i == 8 and is_last_crafting:
+						# wiki.write("<br><br>\n")
+
+					if type(item) == str:
+						if item == "":
+							continue
+						ingredients.append(f"{{Slot:{i}b,Count:1b,{crafting_items[item]}}}")
 						continue
-					assert type(data.get('ingredients')) == list
-					if any([type(x) == list for x in data['ingredients']]):
-							assert all([type(x) == list for x in data['ingredients']])
-							craftings = data['ingredients']
- 
-					else:
-							craftings = [data['ingredients']]
- 
-					# wiki.write(f'<span id="item-{output}">{display_names[output]}</span><br>')
-					for crafting,is_last_crafting in zip(craftings,([False]*(len(craftings)-1))+[True]):
-						data['ingredients'] = crafting
+					assert type(item) == dict # ingredient must be a type of STRING or {"id":STRING,"count":INT}
+					assert type(item.get('id')) == str and type(item.get('count')) == int
+					ingredients.append(f"{{Slot:{i}b,Count:{item['count']}b,{crafting_items[item['id']]}}}")
+				wiki.write('</div>')
 
 
-						if data.get('count') is None:
-							data['count'] = 1
-						assert type(data.get('count')) == int and data['count'] > 0
-						assert data.get('ingredients')
-						assert (data.get('type'),len(data['ingredients'])) in workstations
+				if data.get('nbt') and data['nbt'][0] == '{' and data['nbt'][-1] == '}':
+					data['nbt'] = data['nbt'][1:-1]
 
-						ingredients = []
+				ingredients = ','.join(ingredients)
 
-						wiki.write(data.get("wiki_name",display_names[output])+"<br>")
+				item_nbt = final_items.get(output,f'id:"{output}",%s') % data.get('nbt','')
 
-						for item,i in zip(data['ingredients'],range(999)):
-							wiki.write(html_item_icon(item))
-							if i == 5:
-								wiki.write(" => "+html_item_icon(output,count=data.get('count',1)))
-							if (i+1)%3 == 0:
-								wiki.write("<br>\n")
-							if i == 8:
-								wiki.write("<br><br><br>\n")
-
-							if type(item) == str:
-								if item == "":
-									continue
-								ingredients.append(f"{{Slot:{i}b,Count:1b,{crafting_items[item]}}}")
-								continue
-							assert type(item) == dict # ingredient must be a type of STRING or {"id":STRING,"count":INT}
-							if item.get('count') is None:
-								item['count'] = 1
-							assert type(item.get('id')) == str and type(item.get('count')) == int
-							ingredients.append(f"{{Slot:{i}b,Count:{item['count']}b,{crafting_items[item['id']]}}}")
-
-
-						if data.get('nbt') and data['nbt'][0] == '{' and data['nbt'][-1] == '}':
-							data['nbt'] = data['nbt'][1:-1]
-
-						ingredients = ','.join(ingredients)
-
-						item_nbt = final_items.get(output,f'id:"{output}",%s') % data.get('nbt','')
-
-						print(f"execute if block ~ ~ ~ minecraft:dropper{{Items:[{ingredients}]}} "
-							f"run data merge block ~ ~ ~ {{Items:[{{Slot:4b,Count:{data['count']}b,{item_nbt}}}]}}")
+				print(f"execute if block ~ ~ ~ minecraft:dropper{{Items:[{ingredients}]}} "
+					f"run data merge block ~ ~ ~ {{Items:[{{Slot:4b,Count:{data['count']}b,{item_nbt}}}]}}")
 
 def gen_wiki():
-	with open('wiki.html','w') as wiki:
-		load_craftings(wiki)
+	for crafting_fname in os.listdir('craftings'):
+		if not crafting_fname.endswith('.json'): continue
+		with open('wiki.html','w') as wiki:
+			load_craftings(wiki,crafting_fname)
 
 if __name__ == "__main__":
 	load_items()
