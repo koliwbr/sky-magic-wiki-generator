@@ -1,7 +1,9 @@
 {
 	"magic_dust": {
 		"id": "clock",
-		"CustomModelData" : 2
+		"CustomModelData" : 2,
+		"nbt":"Tags:[\"Magic\",\"Magic Dust\"]",
+		"_nbt_comment":"TEMPORARY FOR COMPATYBILITY WITH OLD SYSTEM,REMOVE LATER"
 	},
 	"magic_steel": {
 		"CustomModelData": 6,
@@ -11,7 +13,34 @@
 	{
 		"id":"crossbow",
 		"CustomModelData":4,
-		"nbt":"AttributeModifiers:[{Amount:-0.8d,AttributeName:\"minecraft:generic.movement_speed\",Name:\"\",Operation:1,Slot:\"mainhand\",UUID:[I;1700689185,2026193433,1655917489,126669536]}],Tags:[\"MagicV2Item\",\"Sniper Crossbow\"]"
+		"nbt":"AttributeModifiers:[{Amount:-0.8d,AttributeName:\"minecraft:generic.movement_speed\",Name:\"\",Operation:1,Slot:\"mainhand\",UUID:[I;1700689185,2026193433,1655917489,126669536]}],Tags:[\"MagicV2Item\",\"Sniper Crossbow\"]",
+		"_nbt_comment":"NBT jest doklejany do bazowego NBT generowanego. Tagi podane w nbt ZASTĘPUJĄ tagi automatycznie generowane."
+
+	},
+	"portable_nether_portal":{
+		"id":"minecraft:carrot_on_a_stick",
+		"CustomModelData": 4,
+		"nbt":"Tags:[\"PortableNetherPortal\"]"
+
+	},
+	"gear":{
+		"id":"clock",
+		"CustomModelData":33 
+	},
+	"small_bamboo_carpet":{
+		"id":"squid_spawn_egg",
+		"CustomModelData":1,
+		"nbt":"EntityTag:{NoGravity:1b,Silent:1b,Tags:[\"FlyingCarpet_small_spawn\"],id:\"bat\"}"
+	},
+	"medium_bamboo_carpet":{
+		"id":"squid_spawn_egg",
+		"CustomModelData":2,
+		"nbt":"EntityTag:{NoGravity:1b,Silent:1b,Tags:[\"FlyingCarpet_medium_spawn\"],id:\"bat\"}"
+	},
+	"big_bamboo_carpet":{
+		"id":"squid_spawn_egg",
+		"CustomModelData":3,
+		"nbt":"EntityTag:{NoGravity:1b,Silent:1b,Tags:[\"FlyingCarpet_big_spawn\"],id:\"bat\"}"
 	}
 }
 

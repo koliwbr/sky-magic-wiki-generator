@@ -1,7 +1,8 @@
 from main import check
 from PIL import Image
-import json
 from math import ceil
+import json
+import os
 
 textures_json = {}
 
@@ -11,31 +12,47 @@ png_path = 'Sky_magic_TexturePack/assets/{}/textures/{}.png'
 for item, data in json.load(open(f'items/skymagic.json')).items():
 	check(item,data)
 
+	data['id'] = data['id'].removeprefix("minecraft:")
+
 	if not data.get('CustomModelData'):
 		continue
-	if not textures_json.get(txt_path % data["id"]):
-		textures_json[txt_path % data["id"]] = {}
-	textures_json[txt_path % data["id"]][data['CustomModelData']] = item
+	if not textures_json.get(data["id"]):
+		textures_json[data["id"]] = {}
+	textures_json[data["id"]][data['CustomModelData']] = item
 
-# print(textures_json)
+print(textures_json)
 
 txt_item_path = {}
 
-for path, txts in textures_json.items():
-	for override in json.load(open(path)).get("overrides",{}):
-		t = txts.get(override.get('predicate',{}).get('custom_model_data'))
-		if t is not None:
-			txt_item_path[t] = override['model']
+for item_id, txts in textures_json.items():
+	try:
+		for override in json.load(open(txt_path % item_id)).get("overrides",{}):
+			t = txts.get(override.get('predicate',{}).get('custom_model_data'))
+			if t is not None:
+				txt_item_path[t] = override['model'].removeprefix('minecraft:') # if minecraft namespace, use vanilla txt. if non use from txt, its not perfekt but works
+	except FileNotFoundError:
+		for t in txts.values():
+			txt_item_path[t] = f"minecraft:item/{item_id}"
 
-# print(txt_item_path)
+print(txt_item_path)
 
 icons = []
 
-for item_id, image_path in txt_item_path.items():
-	if image_path.count(":") == 0:
-		image_path = f"minecraft:{image_path}"
+vanilla_atlas_mapping = json.load(open('atlas-mapping-vanilla.json'))
+vanilla_atlas = Image.open('vanilla_atlas.png')
 
-	i = Image.open(png_path.format(*image_path.split(":",1)))
+
+for item_id, image_path in txt_item_path.items():
+
+	if image_path.startswith('minecraft:'):
+		idx = vanilla_atlas_mapping.get(image_path.removeprefix('minecraft:item/'))
+		x,y = (idx%32)*32, int(idx/32)*32
+		i = vanilla_atlas.crop(box=(x,y,x+32,y+32))
+		i = i.resize((16,16), resample=Image.NEAREST)
+	else:
+		if image_path.count(":") == 0:
+			image_path = f"minecraft:{image_path}"
+		i = Image.open(png_path.format(*image_path.split(":",1)))
 	icons.append((item_id,i))
 
 row_num = ceil(len(icons)/32)
