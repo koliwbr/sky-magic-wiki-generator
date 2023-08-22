@@ -13,6 +13,11 @@
 		"id" : "feather",
 		"CustomModelData":1
 	},
+	"magic_string":{
+		"id":"string",
+		"CustomModelData":1
+
+	},
 	"heavy_steel_crossbow":
 	{
 		"id":"crossbow",
@@ -30,25 +35,6 @@
 	"frost_gel":{
 		"id":"clock",
 		"CustomModelData":29
-	},
-	"gear":{
-		"id":"clock",
-		"CustomModelData":33 
-	},
-	"small_bamboo_carpet":{
-		"id":"squid_spawn_egg",
-		"CustomModelData":1,
-		"nbt":"EntityTag:{NoGravity:1b,Silent:1b,Tags:[\"FlyingCarpet_small_spawn\"],id:\"bat\"}"
-	},
-	"medium_bamboo_carpet":{
-		"id":"squid_spawn_egg",
-		"CustomModelData":2,
-		"nbt":"EntityTag:{NoGravity:1b,Silent:1b,Tags:[\"FlyingCarpet_medium_spawn\"],id:\"bat\"}"
-	},
-	"big_bamboo_carpet":{
-		"id":"squid_spawn_egg",
-		"CustomModelData":3,
-		"nbt":"EntityTag:{NoGravity:1b,Silent:1b,Tags:[\"FlyingCarpet_big_spawn\"],id:\"bat\"}"
 	},
 	"hell_iron":{
 		"id":"clock",

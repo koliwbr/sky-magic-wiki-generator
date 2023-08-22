@@ -12,16 +12,18 @@ txt_path = 'Sky_magic_TexturePack/assets/minecraft/models/item/%s.json'
 model_path = 'Sky_magic_TexturePack/assets/{}/models/{}.json'
 png_path = 'Sky_magic_TexturePack/assets/{}/textures/{}.png'
 
-for item, data in json.load(open(f'items/skymagic.json')).items():
-	check(item,data)
 
-	data['id'] = data['id'].removeprefix("minecraft:")
+for fname in os.listdir('items'):
+	for item, data in json.load(open(f'items/{fname}')).items():
+		check(item,data)
 
-	if not data.get('CustomModelData'):
-		continue
-	if not textures_json.get(data["id"]):
-		textures_json[data["id"]] = {}
-	textures_json[data["id"]][data['CustomModelData']] = item
+		data['id'] = data['id'].removeprefix("minecraft:")
+
+		if not data.get('CustomModelData'):
+			continue
+		if not textures_json.get(data["id"]):
+			textures_json[data["id"]] = {}
+		textures_json[data["id"]][data['CustomModelData']] = item
 
 txt_item_path = {}
 

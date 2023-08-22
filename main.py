@@ -107,9 +107,9 @@ def html_item_icon(id,count=1,name=None):
 	fandom_minecraft_wiki_link = "https://minecraft.fandom.com/wiki/" + (name.replace(" ","_") if name else id)
 	if not name:
 		name = display_names.get(item_namespace+":"+id)
-	base_html = f'<span id="item" title="{name}" class="item {atlas_namespaces[item_namespace][0]}" style="background-position: -%spx -%spx;" >{count}</span>'
+	base_html = f'<span id="item" title="{"" if name == "Air" else name}" class="item {atlas_namespaces[item_namespace][0]}" style="background-position: -%spx -%spx;" >{count}</span>'
 
-	if item_namespace == "minecraft":
+	if item_namespace == "minecraft" and name != "Air":
 		base_html = f'<a target="_blank" href="{fandom_minecraft_wiki_link}">{base_html}</a>'
 	index = atlas_namespaces[item_namespace][1].get(id,1) - 1
 	return base_html % ( (index%32)*32, int(index/32)*32 )
@@ -212,6 +212,7 @@ def gen_wiki():
 			wiki.write(wiki_html+"<br>")
 			for item in final_items:
 				wiki.write(html_item_icon(item))
+			wiki.write('<br>Atlas:<br><img src=/skymagic_atlas.png>')
 		
 
 if __name__ == "__main__":

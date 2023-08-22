@@ -67,9 +67,16 @@
     },"minecraft:ice":{
         "type":"crafting",
         "ingredients":[
-            "","","",
-            "","minecraft:blue_ice","",
-            "","",""
+            [
+                "","","",
+                "","minecraft:blue_ice","",
+                "","",""
+            ],
+            [
+                "","","",
+                "","minecraft:packed_ice","",
+                "","",""
+            ]
         ]
     },
     "minecraft:slime_ball":{
@@ -210,6 +217,76 @@
             ],
             "nbt":"StoredEnchantments:[{id:\"minecraft:infinity\",lvl:1s}]",
             "wiki_name":"Infinity"
+        },
+        {
+            "type":"magic_table",
+            "ingredients":[
+                "minecraft:redstone",{"id":"skymagic:magic_string","count":1},"minecraft:redstone",
+                "minecraft:bow","minecraft:book","minecraft:bow",
+                {"id":"skymagic:magic_dust","count":2},{"id":"minecraft:experience_bottle","count":1},{"id":"skymagic:magic_dust","count":2}
+            ],
+            "nbt":"StoredEnchantments:[{id:\"minecraft:power\",lvl:1s}]",
+            "wiki_name":"Power"
+        },
+        {
+            "type":"magic_table",
+            "ingredients":[
+                "","minecraft:arrow","",
+                "minecraft:nether_brick","minecraft:book","minecraft:nether_brick",
+                {"id":"skymagic:magic_dust","count":2},{"id":"minecraft:experience_bottle","count":1},{"id":"skymagic:magic_dust","count":2}
+            ],
+            "nbt":"StoredEnchantments:[{id:\"minecraft:projectile_protection\",lvl:1s}]",
+            "wiki_name":"Projectile Protection"
+        },
+        {
+            "type":"magic_table",
+            "ingredients":[
+                "","skymagic:magic_steel","",
+                "minecraft:brick","minecraft:book","minecraft:brick",
+                {"id":"skymagic:magic_dust","count":2},{"id":"minecraft:experience_bottle","count":1},{"id":"skymagic:magic_dust","count":2}
+            ],
+            "nbt":"StoredEnchantments:[{id:\"minecraft:protection\",lvl:1s}]",
+            "wiki_name":"Protection"
+        },
+        {
+            "type":"magic_table",
+            "ingredients":[
+                "","minecraft:crossbow","",
+                {"id":"skymagic:magic_string","count":4},"minecraft:book",{"id":"skymagic:magic_string","count":4},
+                {"id":"skymagic:magic_dust","count":2},{"id":"minecraft:experience_bottle","count":4},{"id":"skymagic:magic_dust","count":2}
+            ],
+            "nbt":"StoredEnchantments:[{id:\"minecraft:quick_charge\",lvl:1s}]",
+            "wiki_name":"Quick Charge"
+        },
+        {
+            "type":"magic_table",
+            "ingredients":[
+                "minecraft:flint","minecraft:experience_bottle","minecraft:flint",
+                "minecraft:iron_sword","minecraft:book","minecraft:iron_sword",
+                {"id":"skymagic:magic_dust","count":2},"minecraft:experience_bottle",{"id":"skymagic:magic_dust","count":2}
+            ],
+            "nbt":"StoredEnchantments:[{id:\"minecraft:sharpness\",lvl:1s}]",
+            "wiki_name":"Sharpness"
+        },
+        {
+            "type":"magic_table",
+            "ingredients":[
+                {"id":"minecraft:white_wool","count":8},"minecraft:diamond_pickaxe",{"id":"minecraft:white_wool","count":8},
+                {"id":"skymagic:magic_string","count":16},"minecraft:book",{"id":"skymagic:magic_string","count":16},
+                {"id":"skymagic:magic_dust","count":8},{"id":"minecraft:experience_bottle","count":16},{"id":"skymagic:magic_dust","count":8}
+            ],
+            "nbt":"StoredEnchantments:[{id:\"minecraft:silk_touch\",lvl:1s}]",
+            "wiki_name":"Silk Touch"
+        },
+        {
+            "type":"magic_table",
+            "ingredients":[
+                "","minecraft:diamond_pickaxe","",
+                "skymagic:magic_steel","minecraft:book","skymagic:magic_steel",
+                {"id":"skymagic:magic_dust","count":2},{"id":"minecraft:experience_bottle","count":2},{"id":"skymagic:magic_dust","count":2}
+            ],
+            "nbt":"StoredEnchantments:[{id:\"minecraft:unbreaking\",lvl:1s}]",
+            "wiki_name":"Unbreaking"
         }
     ]
 }
