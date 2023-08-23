@@ -1,0 +1,6 @@
+{
+	"water_bottle":{
+		"id":"minecraft:potion",
+		"nbt":"Potion:\"minecraft:water\""
+	}
+}

@@ -44,6 +44,14 @@
 		"CustomModelData":1,
 		"id":"flint_and_steel",
 		"nbt":"Damage:0,Enchantments:[{id:\"minecraft:fire_aspect\",lvl:1s},{id:\"minecraft:unbreaking\",lvl:2s}],RepairCost:1"
+	},
+	"diamond_dust":{
+		"id":"clock",
+		"CustomModelData":14
+	},
+	"ice_shard":{
+		"id":"clock",
+		"CustomModelData":31
 	}
 }
 

@@ -11,6 +11,7 @@ atlas_namespaces = {
 
 workstations = {
 	'magic_table':{'slots':9,'icon':'Magic_Table.webp','name':"Magic Table"},
+	'alchemy_station':{'slots':12,'icon':'Alchemy_Station.webp','name':"Alchemy Station"},
 	'crafting':{'slots':9,'icon':'Crafting_Table.webp','name':"Vanilla Crafting Table"},
 }
 
@@ -19,6 +20,7 @@ crafting_items = {}
 final_items = {}
 crafting_recipes = {}
 warnings = []
+wiki_links = {}
 
 wiki_html = '''
 <style type="text/css">
@@ -102,15 +104,20 @@ def html_item_icon(id,count=1,name=None):
 	if id == "":
 		id = "minecraft:air"
 
+	inside_wiki_link = f"/wiki/{wiki_links.get(id)}.html#{id}"
+	tmp = bool(wiki_links.get(id))
+
 	item_namespace, id = id.split(":",1)
 
 	fandom_minecraft_wiki_link = "https://minecraft.fandom.com/wiki/" + (name.replace(" ","_") if name else id)
 	if not name:
 		name = display_names.get(item_namespace+":"+id)
-	base_html = f'<span id="item" title="{"" if name == "Air" else name}" class="item {atlas_namespaces[item_namespace][0]}" style="background-position: -%spx -%spx;" >{count}</span>'
+	base_html = f'<span title="{"" if name == "Air" else name}" class="item {atlas_namespaces[item_namespace][0]}" style="background-position: -%spx -%spx;" >{count}</span>'
 
 	if item_namespace == "minecraft" and name != "Air":
 		base_html = f'<a target="_blank" href="{fandom_minecraft_wiki_link}">{base_html}</a>'
+	if item_namespace == "skymagic" and tmp:
+		base_html = f'<a href="{inside_wiki_link}">{base_html}</a>'
 	index = atlas_namespaces[item_namespace][1].get(id,1) - 1
 	return base_html % ( (index%32)*32, int(index/32)*32 )
 	
@@ -159,7 +166,7 @@ def load_craftings(wiki,crafting_fname):
 
 				wiki.write("<br>"+data.get("wiki_name",display_names[output])+"<br>")
 				for crafting,is_last_crafting in zip(craftings,([False]*(len(craftings)-1))+[True]):
-					wiki.write('<div class="crafting" >')
+					wiki.write(f'<div class="crafting" id="{output}">')
 					data['ingredients'] = crafting
 
 					if data.get('count') is None:
@@ -178,8 +185,8 @@ def load_craftings(wiki,crafting_fname):
 							wiki.write(f"<img src=\"/img/{workstations.get(data['type'],{}).get('icon')}\" width=16 height=16 align=right title=\"Crafted in {workstations.get(data['type'],{}).get('name')}\" >") 
 						if (i+1)%3 == 0:
 							wiki.write("<br>\n")
-						# if i == 8 and is_last_crafting:
-							# wiki.write("<br><br>\n")
+						if i == 8 and data['type']=='alchemy_station':
+							wiki.write("<br>\n")
 
 						if type(item) == str:
 							if item == "":
@@ -199,10 +206,17 @@ def load_craftings(wiki,crafting_fname):
 
 						item_nbt = final_items.get(output,f'id:"{output}",%s') % data.get('nbt','')
 
-						print(f"execute if block ~ ~ ~ minecraft:dropper{{Items:[{ingredients}]}} "
-							f"run data merge block ~ ~ ~ {{Items:[{{Slot:4b,Count:{data['count']}b,{item_nbt}}}]}}")
+						# print(f"execute if block ~ ~ ~ minecraft:dropper{{Items:[{ingredients}]}} "
+							# f"run data merge block ~ ~ ~ {{Items:[{{Slot:4b,Count:{data['count']}b,{item_nbt}}}]}}")
 
 def gen_wiki():
+	for crafting_fname in os.listdir('craftings'):
+		if not crafting_fname.endswith('.json'): continue
+		for output in json.load(open(f'craftings/{crafting_fname}')).keys():
+			if output.startswith('_'): continue
+			if not output.startswith(f'{namespace}:'): continue
+			wiki_links[output] = crafting_fname.removesuffix('.json')
+	print(wiki_links)
 	for crafting_fname in os.listdir('craftings'):
 		if not crafting_fname.endswith('.json'): continue
 		with open(f'wiki/{crafting_fname.removesuffix(".json")}.html','w') as wiki:
