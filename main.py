@@ -219,10 +219,10 @@ def gen_wiki():
 	print(wiki_links)
 	for crafting_fname in os.listdir('craftings'):
 		if not crafting_fname.endswith('.json'): continue
-		with open(f'wiki/{crafting_fname.removesuffix(".json")}.html','w') as wiki:
+		with open(f'docs/{crafting_fname.removesuffix(".json")}.html','w') as wiki:
 			wiki.write(wiki_html)
 			load_craftings(wiki,crafting_fname)
-		with open(f'wiki/all_items.html','w') as wiki:
+		with open(f'docs/all_items.html','w') as wiki:
 			wiki.write(wiki_html+"<br>")
 			for item in final_items:
 				wiki.write(html_item_icon(item))
